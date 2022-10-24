@@ -1,3 +1,8 @@
+import { useContext } from "react";
+
+// context
+import { dataContext } from "@src/context/SearchDataProvider";
+
 // hook
 import { useUserData } from "@src/hooks/useUserData";
 
@@ -9,22 +14,17 @@ import MySelect from "@src/components/common/MySelect";
 import type { NextPage } from "next";
 
 const options = [
-  { value: "Nomal", label: "Nomal" },
+  { value: "Normal", label: "Normal" },
   { value: "SoloRank", label: "SoloRank" },
   { value: "FreeRank", label: "FreeRank" },
 ];
 
 const Home: NextPage = () => {
-  const { data, isError, isLoading } = useUserData({
-    name: "hide on bush",
-    matchCategory: "SoloRank",
-    lane: "Mid",
-  });
+  const { searchDatas } = useContext(dataContext);
+  const { data, isError, isLoading } = useUserData(searchDatas);
 
   if (!data || isLoading) return <>로딩중...</>;
   if (isError) return <>에러 처리...</>;
-
-  console.log(data);
 
   return (
     <>
@@ -49,7 +49,7 @@ const Home: NextPage = () => {
                 <b>{data.role.toFixed(2)}</b>
               </span>
               <span className="flex-1">인분</span>
-              <div className="relative top-[-12px] h-[24px]">
+              <div className="relative top-[-12px] h-[24px] text-center">
                 <span>{data.tier}</span>
                 <br />
                 <span>{data.lp}LP</span>
@@ -86,6 +86,7 @@ const Home: NextPage = () => {
               <span className="text-center basis-[60px]">라인전</span>
               <span className="text-center basis-[60px]">KDA</span>
             </li>
+            {/* 모스트 라인 */}
             {data.mostLanes.map((lane) => (
               <li key={lane.lane} className="flex items-center space-x-10">
                 <div className="flex flex-1">
@@ -110,6 +111,7 @@ const Home: NextPage = () => {
                 </span>
               </li>
             ))}
+            {/* 모스트 챔피언 */}
             {data.mostChampions.map((v) => (
               <li key={v.id} className="flex items-center space-x-10">
                 <div className="flex flex-1">
@@ -138,6 +140,8 @@ const Home: NextPage = () => {
                 </span>
               </li>
             ))}
+            {/* >>> 기록 없음 ( 디자인 수정 ) */}
+            {data.mostLanes.length === 0 && <>기록된 전적이 없습니다.</>}
           </ul>
         </section>
       </article>

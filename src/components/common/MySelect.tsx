@@ -1,4 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+
+// context
+import { dataContext } from "@src/context/SearchDataProvider";
 
 // type
 import type { MouseEvent } from "react";
@@ -8,16 +11,20 @@ type Props = {
 };
 
 const MySelect = ({ options }: Props) => {
-  const [selected, setSelected] = useState(options[0].label);
+  const { searchDatas, onChangeData } = useContext(dataContext);
+
   const [isHidden, setIsHidden] = useState(true);
 
   // 2022/10/24 - 옵션 클릭 - by 1-blue
-  const onClickOption = useCallback((e: MouseEvent<HTMLDivElement>) => {
-    if (!(e.target instanceof HTMLLIElement)) return;
+  const onClickOption = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      if (!(e.target instanceof HTMLLIElement)) return;
 
-    setSelected(e.target.innerText);
-    setIsHidden(true);
-  }, []);
+      onChangeData("matchCategory", e.target.innerText);
+      setIsHidden(true);
+    },
+    [onChangeData]
+  );
 
   // 2022/10/24 - select ref - by 1-blue
   const selectRef = useRef<null | HTMLUListElement>(null);
@@ -50,7 +57,7 @@ const MySelect = ({ options }: Props) => {
           className="w-[140px] text-center border-gray-300 border-2 rounded-md px-1 py-0.5 font-bold after:content-['_👇']"
           onClick={() => setIsHidden((prev) => !prev)}
         >
-          {selected}
+          {searchDatas.matchCategory}
         </li>
         <div
           hidden={isHidden}

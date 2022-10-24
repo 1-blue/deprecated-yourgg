@@ -19,7 +19,8 @@ export const useUserData = ({
   champion,
 }: FetchDataRequest) => {
   const { data, error } = useSWR<FetchDataResposne>(
-    `https://api.your.gg/kr/api/summoners/${name}?matchCategory=${matchCategory}&lane=${lane}` +
+    `https://api.your.gg/kr/api/summoners/${name}?matchCategory=${matchCategory}` +
+      (lane ? `lane=${lane}` : "") +
       (champion ? `champion=${champion}` : "")
   );
 

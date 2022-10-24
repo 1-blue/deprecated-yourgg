@@ -1,5 +1,8 @@
 import { SWRConfig } from "swr";
 
+// provider ( by Context API )
+import SearchDataProvider from "@src/context/SearchDataProvider";
+
 // css
 import "../css/global.css";
 
@@ -15,9 +18,11 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig value={{ fetcher }}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <SearchDataProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SearchDataProvider>
     </SWRConfig>
   );
 }
