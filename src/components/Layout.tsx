@@ -11,7 +11,9 @@ const Layout = ({ children }: Props) => {
       </header> */}
 
       {/* main */}
-      <main className="max-w-[1024px] py-[10vh] mx-auto">{children}</main>
+      <main className="max-w-[1024px] py-[10vh] px-[4vw] mx-auto">
+        {children}
+      </main>
 
       {/* footer */}
       {/* <footer></footer> */}

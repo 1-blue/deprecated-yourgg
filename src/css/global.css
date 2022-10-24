@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    /* 등록한 폰트: "Noto Sans Korean" */
+    font-family: 'Noto Sans KR', sans-serif;
+
+    @apply
+    bg-[#F5F5F5]
+    text-[#2D2B2E]
+  }
+}
