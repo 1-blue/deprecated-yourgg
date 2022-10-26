@@ -5,6 +5,7 @@ import { useData } from "@src/hooks/useData";
 import Photo from "@src/components/common/Photo";
 import MySelect from "@src/components/common/MySelect";
 import MyLoading from "@src/components/common/MyLoading";
+import TierChart from "@src/components/common/TierChart";
 
 // type
 import type { NextPage } from "next";
@@ -58,13 +59,12 @@ const Name: NextPage = () => {
             </span>
             <span className="flex-1">라인전</span>
           </li>
-          {/*  >>> 날짜로 변경 (날짜값이 안보임), 그래프( tierHistory ) */}
           <li className="flex">
             <span className="basis-[100px]">
               <b>{data.kda.toFixed(1)}</b>
             </span>
-            <span className="flex-1">KDA</span>
-            {/* <span>{data.winRate.toFixed(2)}%</span> */}
+            <span className="pr-4 mr-auto">KDA</span>
+            <TierChart tierHistory={data.tierHistory} />
           </li>
         </ul>
       </section>

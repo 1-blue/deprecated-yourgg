@@ -31,6 +31,18 @@ type MostLane = {
   role: number;
   winRate: number;
 };
+/**
+ * 2022/10/26 - 티어 기록 - by 1-blue
+ */
+type TierHistory = {
+  division: string;
+  leaguePoint: number;
+  loses: number;
+  normalizedPoint: number;
+  tier: string;
+  updated: number;
+  wins: number;
+};
 
 /**
  * 2022/10/24 - 검색에 필요한 데이터 타입 - by 1-blue
@@ -59,4 +71,5 @@ export type FetchDataResposne = {
   winRate: number;
   mostChampions: MostChampion[];
   mostLanes: MostLane[];
+  tierHistory: TierHistory[];
 };
