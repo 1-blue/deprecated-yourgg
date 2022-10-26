@@ -13,6 +13,11 @@ type Props = {
 
 const MySelect = ({ options }: Props) => {
   const router = useRouter();
+  const decodedPath = decodeURI(router.asPath);
+  const targetIndex = decodedPath.indexOf("?");
+  const basePath = encodeURI(
+    targetIndex === -1 ? decodedPath : decodedPath.slice(0, targetIndex)
+  );
   const { searchDatas, onChangeData } = useContext(dataContext);
 
   const [isHidden, setIsHidden] = useState(true);
@@ -29,12 +34,10 @@ const MySelect = ({ options }: Props) => {
       // select options 숨기기
       setIsHidden(true);
 
-      // >>> 깔끔한 방법 찾아보기
       // query string 변경
-      const path = router.asPath.slice(0, router.asPath.indexOf("?"));
-      router.push(path + `?matchCategory=${e.target.innerText}`);
+      router.push(basePath + `?matchCategory=${e.target.innerText}`);
     },
-    [onChangeData, router]
+    [onChangeData, basePath, router]
   );
 
   // 2022/10/24 - select ref - by 1-blue

@@ -1,11 +1,19 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+
 // hook
 import { useData } from "@src/hooks/useData";
 
+// util
+import { combineClassNames } from "@src/libs";
+
 // component
+import Icon from "@src/components/common/Icon";
 import Photo from "@src/components/common/Photo";
 import MySelect from "@src/components/common/MySelect";
 import MyLoading from "@src/components/common/MyLoading";
-import TierChart from "@src/components/common/TierChart";
+import Summary from "@src/components/Summary";
 
 // type
 import type { NextPage } from "next";
@@ -17,6 +25,24 @@ const options = [
 ];
 
 const Name: NextPage = () => {
+  const router = useRouter();
+  const { asPath, query } = useRouter();
+  const decodedPath = decodeURI(asPath);
+  const targetIndex = decodedPath.indexOf("?");
+  const basePath = encodeURI(
+    targetIndex === -1 ? decodedPath : decodedPath.slice(0, targetIndex)
+  );
+
+  // 2022/10/26 - url에 matchCategory가 없다면 붙여주기 ( 기본은 "SoloRank" ) - by 1-blue
+  useEffect(() => {
+    if (asPath === "/[name]") return;
+    if (router.query.matchCategory) return;
+
+    router.push(
+      basePath + `?matchCategory=${sessionStorage.getItem("matchCategory")}`
+    );
+  }, [asPath, router, basePath]);
+
   // >>> as 모두 수정
   const { data, isLoading, isError } = useData();
 
@@ -39,42 +65,15 @@ const Name: NextPage = () => {
 
       {/* 인분 / 라인전 / KDA */}
       <section>
-        <ul className="flex flex-col space-y-1">
-          <li className="flex">
-            <span className="basis-[100px]">
-              <b>{data.role.toFixed(2)}</b>
-            </span>
-            <span className="flex-1">인분</span>
-            <div className="relative top-[-12px] h-[24px] text-center">
-              <span>{data.tier}</span>
-              <br />
-              <span>{data.lp}LP</span>
-            </div>
-          </li>
-          <li className="flex">
-            <span className="basis-[100px]">
-              <b>
-                {10 - +data.laning.toFixed(1)} : {data.laning.toFixed(1)}
-              </b>
-            </span>
-            <span className="flex-1">라인전</span>
-          </li>
-          <li className="flex">
-            <span className="basis-[100px]">
-              <b>{data.kda.toFixed(1)}</b>
-            </span>
-            <span className="pr-4 mr-auto">KDA</span>
-            <TierChart tierHistory={data.tierHistory} />
-          </li>
-        </ul>
+        <Summary data={data} />
       </section>
 
       <hr className="border-gray-400 border mt-12 mb-4" />
 
       {/* 최근 경기 기록 */}
-      <section className="px-4">
+      <section>
         <ul className="flex flex-col space-y-2">
-          <li key={-1} className="flex space-x-10">
+          <li className="flex space-x-10 px-4 py-2">
             <span className="flex flex-1">최근 30 경기</span>
             <span className="text-center basis-[60px]">승률</span>
             <span className="text-center basis-[60px]">인분</span>
@@ -83,56 +82,91 @@ const Name: NextPage = () => {
           </li>
           {/* 모스트 라인 */}
           {data.mostLanes.map((lane) => (
-            <li key={lane.lane} className="flex items-center space-x-10">
-              <div className="flex flex-1">
-                {/* >>> 임시로 이미지 대체 */}
-                <div className="w-12 h-12 mr-3 bg-gray-400" />
-                <div className="flex flex-col">
-                  <span>{lane.lane}</span>
-                  <span>{lane.matchCount} 경기</span>
-                </div>
-              </div>
-              <span className="text-center basis-[60px]">
-                {Math.round(lane.winRate)}%
-              </span>
-              <span className="text-center basis-[60px]">
-                {lane.role.toFixed(2)}
-              </span>
-              <span className="text-center basis-[60px]">
-                {lane.laning.toFixed(1)}
-              </span>
-              <span className="text-center basis-[60px]">
-                {lane.kda.toFixed(2)}
-              </span>
+            <li key={lane.lane}>
+              <Link
+                href={{
+                  pathname: `${basePath}`,
+                  query: {
+                    matchCategory: sessionStorage.getItem("matchCategory"),
+                    lane: lane.lane,
+                  },
+                }}
+              >
+                <a
+                  className={combineClassNames(
+                    "flex items-center space-x-10 px-4 py-2 rounded-md transition-colors hover:bg-indigo-200",
+                    query?.lane === lane.lane ? "bg-indigo-100" : ""
+                  )}
+                >
+                  <div className="flex flex-1">
+                    <div className="w-12 h-12 flex justify-center items-center mr-3 bg-gray-200">
+                      <Icon shape={lane.lane} className="w-8 h-8" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span>{lane.lane}</span>
+                      <span>{lane.matchCount} 경기</span>
+                    </div>
+                  </div>
+                  <span className="text-center basis-[60px]">
+                    {Math.round(lane.winRate)}%
+                  </span>
+                  <span className="text-center basis-[60px]">
+                    {lane.role.toFixed(2)}
+                  </span>
+                  <span className="text-center basis-[60px]">
+                    {lane.laning.toFixed(1)}
+                  </span>
+                  <span className="text-center basis-[60px]">
+                    {lane.kda.toFixed(2)}
+                  </span>
+                </a>
+              </Link>
             </li>
           ))}
           {/* 모스트 챔피언 */}
-          {data.mostChampions.map((v) => (
-            <li key={v.id} className="flex items-center space-x-10">
-              <div className="flex flex-1">
-                <Photo
-                  src={v.imageUrl}
-                  alt={`${v.name} 이미지`}
-                  className="w-12 h-12 mr-3"
-                  priority
-                />
-                <div className="flex flex-col">
-                  <span>{v.name}</span>
-                  <span>{v.matchCount} 경기</span>
-                </div>
-              </div>
-              <span className="text-center basis-[60px]">
-                {Math.round(v.winRate)}%
-              </span>
-              <span className="text-center basis-[60px]">
-                {v.role.toFixed(2)}
-              </span>
-              <span className="text-center basis-[60px]">
-                {v.laning.toFixed(1)}
-              </span>
-              <span className="text-center basis-[60px]">
-                {v.kda.toFixed(2)}
-              </span>
+          {data.mostChampions.map((champion) => (
+            <li key={champion.id}>
+              <Link
+                href={{
+                  pathname: `${basePath}`,
+                  query: {
+                    matchCategory: sessionStorage.getItem("matchCategory"),
+                    champion: champion.key,
+                  },
+                }}
+              >
+                <a
+                  className={combineClassNames(
+                    "flex items-center space-x-10 px-4 py-2 rounded-md transition-colors hover:bg-indigo-200",
+                    query?.champion === champion.key ? "bg-indigo-100" : ""
+                  )}
+                >
+                  <div className="flex flex-1">
+                    <Photo
+                      src={champion.imageUrl}
+                      alt={`${champion.name} 이미지`}
+                      className="w-12 h-12 mr-3"
+                      priority
+                    />
+                    <div className="flex flex-col">
+                      <span>{champion.name}</span>
+                      <span>{champion.matchCount} 경기</span>
+                    </div>
+                  </div>
+                  <span className="text-center basis-[60px]">
+                    {Math.round(champion.winRate)}%
+                  </span>
+                  <span className="text-center basis-[60px]">
+                    {champion.role.toFixed(2)}
+                  </span>
+                  <span className="text-center basis-[60px]">
+                    {champion.laning.toFixed(1)}
+                  </span>
+                  <span className="text-center basis-[60px]">
+                    {champion.kda.toFixed(2)}
+                  </span>
+                </a>
+              </Link>
             </li>
           ))}
           {/* >>> 기록 없음 ( 디자인 수정 ) */}

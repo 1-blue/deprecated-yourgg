@@ -1,4 +1,9 @@
 /**
+ * 2022/10/26 - 아이콘 형태 - by 1-blue
+ */
+export type IconShape = "Top" | "Jug" | "Mid" | "Adc" | "Sup";
+
+/**
  * 2022/10/24 - 카테고리 - by 1-blue
  */
 export type MatchCategory = "Normal" | "SoloRank" | "FreeRank";
@@ -13,6 +18,7 @@ type MostChampion = {
   id: number;
   imageUrl: string;
   kda: number;
+  key: string;
   lane: Lane;
   laning: number;
   matchCount: number;

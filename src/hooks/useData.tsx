@@ -22,20 +22,21 @@ export const useData = () => {
     string | null
   >(null);
 
+  // 2022/10/26 - 데이터 요청 - by 1-blue
   const { data, error } = useSWR<FetchDataResposne>(
     `https://api.your.gg/kr/api/summoners/${name}?matchCategory=${
       (storageMatchCateogory && matchCategory) || "SoloRank"
     }` +
-      (lane ? `lane=${lane}` : "") +
-      (champion ? `champion=${champion}` : "")
+      (lane ? `&lane=${lane}` : "") +
+      (champion ? `&champion=${champion}` : "")
   );
 
-  // 2022/10/25 - "sessionStorage"의 "matchCategory"을 가져옴 - by 1-blue
+  // 2022/10/26 - "sessionStorage"의 "matchCategory"을 가져옴 - by 1-blue
   useEffect(() => {
     setStorageMatchCategory(sessionStorage.getItem("matchCategory"));
   }, [matchCategory]);
 
-  // 2022/10/25 - "sessionStorage"에 "matchCategory"을 기록 - by 1-blue
+  // 2022/10/26 - "sessionStorage"에 "matchCategory"을 기록 - by 1-blue
   useEffect(() => {
     if (typeof matchCategory !== "string") return;
 
