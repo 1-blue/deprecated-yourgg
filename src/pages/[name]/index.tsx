@@ -4,6 +4,7 @@ import { useData } from "@src/hooks/useData";
 // component
 import Photo from "@src/components/common/Photo";
 import MySelect from "@src/components/common/MySelect";
+import MyLoading from "@src/components/common/MyLoading";
 
 // type
 import type { NextPage } from "next";
@@ -19,7 +20,7 @@ const Name: NextPage = () => {
   const { data, isLoading, isError } = useData();
 
   if (isError) return <>에러 처리...</>;
-  if (!data || isLoading) return <>로딩중...</>;
+  if (!data || isLoading) return <MyLoading />;
 
   return (
     <article>
@@ -71,8 +72,8 @@ const Name: NextPage = () => {
       <hr className="border-gray-400 border mt-12 mb-4" />
 
       {/* 최근 경기 기록 */}
-      <section>
-        <ul className="flex flex-col space-y-1">
+      <section className="px-4">
+        <ul className="flex flex-col space-y-2">
           <li key={-1} className="flex space-x-10">
             <span className="flex flex-1">최근 30 경기</span>
             <span className="text-center basis-[60px]">승률</span>
