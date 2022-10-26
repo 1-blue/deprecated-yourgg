@@ -1,11 +1,11 @@
 /**
  * 2022/10/24 - 카테고리 - by 1-blue
  */
-type MatchCategory = "Normal" | "SoloRank" | "FreeRank";
+export type MatchCategory = "Normal" | "SoloRank" | "FreeRank";
 /**
  * 2022/10/24 - 라인 - by 1-blue
  */
-type Lane = "Top" | "Jug" | "Mid" | "Adc" | "Sup";
+export type Lane = "Top" | "Jug" | "Mid" | "Adc" | "Sup";
 /**
  * 2022/10/24 - 모스트 챔피언 - by 1-blue
  */
@@ -37,7 +37,7 @@ type MostLane = {
  */
 export type SearchDataType = {
   name: string;
-  matchCategory: MatchCategory;
+  matchCategory?: MatchCategory;
   champion?: string;
   lane?: Lane;
 };

@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 // context
 import { dataContext } from "@src/context/SearchDataProvider";
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const MySelect = ({ options }: Props) => {
+  const router = useRouter();
   const { searchDatas, onChangeData } = useContext(dataContext);
 
   const [isHidden, setIsHidden] = useState(true);
@@ -18,12 +20,21 @@ const MySelect = ({ options }: Props) => {
   // 2022/10/24 - 옵션 클릭 - by 1-blue
   const onClickOption = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
       if (!(e.target instanceof HTMLLIElement)) return;
 
+      // context api 변경
       onChangeData("matchCategory", e.target.innerText);
+
+      // select options 숨기기
       setIsHidden(true);
+
+      // >>> 깔끔한 방법 찾아보기
+      // query string 변경
+      const path = router.asPath.slice(0, router.asPath.indexOf("?"));
+      router.push(path + `?matchCategory=${e.target.innerText}`);
     },
-    [onChangeData]
+    [onChangeData, router]
   );
 
   // 2022/10/24 - select ref - by 1-blue

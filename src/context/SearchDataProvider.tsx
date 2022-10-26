@@ -1,7 +1,7 @@
-import { createContext, useCallback, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer } from "react";
 
 // type
-import type { SearchDataType } from "@src/types";
+import type { MatchCategory, SearchDataType } from "@src/types";
 
 type TargetType = keyof SearchDataType;
 type ContextType = {
@@ -18,7 +18,7 @@ type Props = {
 
 // 기본값
 const defaultData: SearchDataType = {
-  name: "hide on bush",
+  name: "",
   matchCategory: "SoloRank",
 };
 
@@ -60,6 +60,14 @@ const SearchDataProvider = ({ children }: Props) => {
     },
     [dispatch]
   );
+
+  // 2022/10/25 - "matchCategory"값 "sessionStorage"와 동기화 ( 새로고침 시 유지 ) - by 1-blue
+  useEffect(() => {
+    onChangeData(
+      "matchCategory",
+      sessionStorage.getItem("matchCategory") as MatchCategory
+    );
+  }, [onChangeData]);
 
   return (
     <dataContext.Provider
