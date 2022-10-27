@@ -57,7 +57,7 @@ type TierHistory = {
  */
 export type SearchDataType = {
   name: string;
-  matchCategory?: MatchCategory;
+  matchCategory: MatchCategory;
   champion?: string;
   lane?: Lane;
 };

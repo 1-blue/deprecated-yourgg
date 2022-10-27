@@ -61,8 +61,14 @@ const SearchDataProvider = ({ children }: Props) => {
     [dispatch]
   );
 
-  // 2022/10/25 - "matchCategory"값 "sessionStorage"와 동기화 ( 새로고침 시 유지 ) - by 1-blue
+  // 2022/10/26 - "matchCategory"값 "sessionStorage"와 동기화 ( 새로고침 시 유지 ) - by 1-blue
   useEffect(() => {
+    const matchCategory = sessionStorage.getItem(
+      "matchCategory"
+    ) as MatchCategory;
+
+    if (!matchCategory) sessionStorage.setItem("matchCategory", "SoloRank");
+
     onChangeData(
       "matchCategory",
       sessionStorage.getItem("matchCategory") as MatchCategory

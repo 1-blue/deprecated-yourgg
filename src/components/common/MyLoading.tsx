@@ -27,14 +27,14 @@ const MyLoading = () => {
       </section>
 
       {/* 인분 / 라인전 / KDA 영역 */}
-      <section className="flex justify-between">
-        <ul className="flex flex-col space-y-1">
-          <li className="w-[30vw] h-6 bg-gray-300 rounded-md shadow-sm"></li>
-          <li className="w-[30vw] h-6 bg-gray-300 rounded-md shadow-sm"></li>
-          <li className="w-[30vw] h-6 bg-gray-300 rounded-md shadow-sm"></li>
+      <section className="w-full flex justify-between">
+        <ul className="w-4/12 flex flex-col space-y-1">
+          <li className="w-full h-6 bg-gray-300 rounded-md shadow-sm"></li>
+          <li className="w-full h-6 bg-gray-300 rounded-md shadow-sm"></li>
+          <li className="w-full h-6 bg-gray-300 rounded-md shadow-sm"></li>
         </ul>
 
-        <div className="w-[50vw] h-20 bg-gray-300 rounded-md shadow-sm"></div>
+        <div className="w-7/12 h-20 bg-gray-300 rounded-md shadow-sm"></div>
       </section>
 
       <hr className="border-gray-400 border mt-12 mb-4" />

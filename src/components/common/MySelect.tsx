@@ -13,11 +13,6 @@ type Props = {
 
 const MySelect = ({ options }: Props) => {
   const router = useRouter();
-  const decodedPath = decodeURI(router.asPath);
-  const targetIndex = decodedPath.indexOf("?");
-  const basePath = encodeURI(
-    targetIndex === -1 ? decodedPath : decodedPath.slice(0, targetIndex)
-  );
   const { searchDatas, onChangeData } = useContext(dataContext);
 
   const [isHidden, setIsHidden] = useState(true);
@@ -27,6 +22,13 @@ const MySelect = ({ options }: Props) => {
     (e: MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
       if (!(e.target instanceof HTMLButtonElement)) return;
+      if (router.asPath === "/[name]") return;
+
+      const decodedPath = decodeURI(router.asPath);
+      const targetIndex = decodedPath.indexOf("?");
+      const basePath = encodeURI(
+        targetIndex === -1 ? decodedPath : decodedPath.slice(0, targetIndex)
+      );
 
       // context api 변경
       onChangeData("matchCategory", e.target.innerText);
@@ -35,9 +37,12 @@ const MySelect = ({ options }: Props) => {
       setIsHidden(true);
 
       // query string 변경
-      router.push(basePath + `?matchCategory=${e.target.innerText}`);
+      router.push({
+        pathname: basePath,
+        query: { matchCategory: e.target.innerText },
+      });
     },
-    [onChangeData, basePath, router]
+    [router, onChangeData]
   );
 
   // 2022/10/24 - select ref - by 1-blue

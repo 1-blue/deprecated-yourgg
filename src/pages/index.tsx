@@ -21,11 +21,12 @@ const Home: NextPage = () => {
       e.preventDefault();
       if (name.length === 0) return alert("이름을 입력해주세요!");
 
-      router.push(
-        `/${name}?matchCategory=${
-          sessionStorage.getItem("matchCategory") || "SoloRank"
-        }`
-      );
+      router.push({
+        pathname: name,
+        query: {
+          matchCategory: sessionStorage.getItem("matchCategory") || "SoloRank",
+        },
+      });
     },
     [router, name]
   );

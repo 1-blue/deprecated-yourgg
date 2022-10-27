@@ -58,7 +58,7 @@ const TierChart = ({ tierHistory }: Props) => {
 
               return `
                 <ul class="chart-tooltip">
-                  <li>${tier} - ${leaguePoint}</li>
+                  <li>${tier} - ${leaguePoint}LP</li>
                   <li>
                     <small>${dateFormat(updated, "YYYY-MM-DD")}<small>
                   </li>
