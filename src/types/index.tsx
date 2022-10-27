@@ -2,7 +2,7 @@
  * 2022/10/26 - 아이콘 형태 - by 1-blue
  */
 export type LaneIconShape = "Top" | "Jug" | "Mid" | "Adc" | "Sup";
-export type HeroIconShape = "CircleQuestion" | "DoubleArrowBottom";
+export type HeroIconShape = "CircleQuestion" | "DoubleArrowBottom" | "Search";
 export type IconShape = LaneIconShape | HeroIconShape;
 
 /**
