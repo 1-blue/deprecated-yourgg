@@ -1,14 +1,14 @@
 import { useCallback } from "react";
 
 // type
-import type { IconShape } from "@src/types";
+import type { LaneIconShape } from "@src/types";
 
 type Props = {
-  shape: IconShape;
+  shape: LaneIconShape;
   className: string;
 };
 
-const Icon = ({ shape, className }: Props) => {
+const LaneIcon = ({ shape, className }: Props) => {
   const getIcon = useCallback(() => {
     switch (shape) {
       case "Top":
@@ -119,4 +119,4 @@ const Icon = ({ shape, className }: Props) => {
   );
 };
 
-export default Icon;
+export default LaneIcon;

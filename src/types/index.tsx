@@ -1,7 +1,9 @@
 /**
  * 2022/10/26 - 아이콘 형태 - by 1-blue
  */
-export type IconShape = "Top" | "Jug" | "Mid" | "Adc" | "Sup";
+export type LaneIconShape = "Top" | "Jug" | "Mid" | "Adc" | "Sup";
+export type HeroIconShape = "CircleQuestion" | "DoubleArrowBottom";
+export type IconShape = LaneIconShape | HeroIconShape;
 
 /**
  * 2022/10/24 - 카테고리 - by 1-blue
